@@ -14,9 +14,9 @@ const eventEmitter = new NativeEventEmitter(PitchTracker);
 export default {
   ...PitchTracker,
   noteOn: (callback: (res: object) => any) => {
-    eventEmitter.addListener("NoteOn", callback);
+    eventEmitter.addListener('NoteOn', callback);
   },
   noteOff: (callback: (res: object) => any) => {
-    eventEmitter.addListener("NoteOff", callback);
-  }
+    eventEmitter.addListener('NoteOff', callback);
+  },
 } as PitchTrackerType;
