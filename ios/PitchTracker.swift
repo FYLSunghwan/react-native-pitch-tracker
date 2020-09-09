@@ -21,8 +21,7 @@ class PitchTracker: RCTEventEmitter {
         prevKeys = Array(repeating: 0, count: 88)
 
         guard let workingAudioInputManager = audioInputManager else {
-        print("No")
-        return
+            return
         }
         print("Audio Manager Loaded")
         
