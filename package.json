@@ -60,7 +60,8 @@
     "react": "16.11.0",
     "react-native": "0.62.2",
     "release-it": "^13.5.8",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "react-native-permissions": "^2.2.0"
   },
   "peerDependencies": {
     "react": "*",
@@ -138,8 +139,5 @@
       "module",
       "typescript"
     ]
-  },
-  "dependencies": {
-    "react-native-permissions": "^2.2.0"
   }
 }
