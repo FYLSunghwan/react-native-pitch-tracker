@@ -1,5 +1,7 @@
 # react-native-pitch-tracker
 
+[![NPM](https://nodei.co/npm/react-native-pitch-tracker.png?compact=true)](https://nodei.co/npm/react-native-pitch-tracker/)
+
 React Native Pitch Tracker implemented with Tensorflow Lite Model
 
 - [x] iOS/iPadOS Implementation
