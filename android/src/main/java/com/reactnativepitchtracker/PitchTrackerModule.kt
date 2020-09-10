@@ -207,6 +207,7 @@ class PitchTrackerModule(reactContext: ReactApplicationContext) : ReactContextBa
                 Array(RECORDING_LENGTH) { FloatArray(1) }
         val outputScores =
                 Array(1) { Array(32){FloatArray(88) }}
+        val prevResult = IntArray(88)
 
         // Loop, grabbing recorded data and running the recognition model on it.
         while (shouldContinueRecognition) {
@@ -252,7 +253,7 @@ class PitchTrackerModule(reactContext: ReactApplicationContext) : ReactContextBa
 
             val restemp = outputMap[0] as Array<Array<FloatArray>>
 
-            val result = FloatArray(88)
+            val result = IntArray(88)
 
             for (i in 0 until 32) {
                 for (j in 0 until 88) {
@@ -263,11 +264,18 @@ class PitchTrackerModule(reactContext: ReactApplicationContext) : ReactContextBa
             }
 
             // Send Event
-            var body: WritableMap = Arguments.createMap()
-            body.putInt("midiNum", 3)
-            sendEvent("NoteOn", body)
-
-            Log.v(LOG_TAG, Arrays.toString(result))
+            for (i in 0 until 88) {
+                var body: WritableMap = Arguments.createMap()
+                if(prevResult[i] == 0 && result[i] > 0) {
+                    body.putInt("midiNum", i+21)
+                    sendEvent("NoteOn", body)
+                }
+                if(prevResult[i] > 0 && result[i] == 0) {
+                    body.putInt("midiNum", i+21)
+                    sendEvent("NoteOff", body)
+                }
+                prevResult[i] = result[i]
+            }
 
             try {
                 // We don't need to run too frequently, so snooze for a bit.
