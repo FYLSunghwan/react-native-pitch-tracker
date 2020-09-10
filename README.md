@@ -3,21 +3,54 @@
 React Native Pitch Tracker implemented with Tensorflow Lite Model
 
 - [x] iOS/iPadOS Implementation
-- [ ] Android Implementation  
+- [x] Android Implementation  
 
 ## Installation
 
 ```sh
-npm install react-native-pitch-tracker
+npm install --save react-native-pitch-tracker react-native-permissions
 ```
 
 ## Usage
 
-### Prerequisites (XCode)
+### Prerequisites (iOS/iPadOS)
 - First, Download [this(Download Link : Onsets and Frames TFLite)](https://storage.googleapis.com/magentadata/models/onsets_frames_transcription/tflite/onsets_frames_wavinput.tflite) Model.  
-- After that, add this file to your XCode Workspace.
+- After that, add this file to your XCode Project.
 - Double check that the file is successfully imported to project.
   - Check the .tflite model is in your `Project File -> Build Phases -> Copy Bundle Resources`  
+- Open your project's `Info.plist` in XCode, and add `NSMicrophoneUsageDescription` row.
+  - Or in other editor, add this row in the plist.  
+  ```plist
+  <key>NSMicrophoneUsageDescription</key>
+  <string>YOUR TEXT</string>
+  ```
+- Open your project's `Podfile` and update with these lines.
+```ruby
+target 'YourAwesomeProject' do
+
+  # …
+
+  permissions_path = '../node_modules/react-native-permissions/ios'
+
+  pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone.podspec"
+
+end
+```  
+
+### Prerequisites (Android)
+- Copy the downloaded [file(tflite model)](https://storage.googleapis.com/magentadata/models/onsets_frames_transcription/tflite/onsets_frames_wavinput.tflite) to `{ProjDirectory}/android/app/src/main/assets`.
+- After that, update the `build.gradle`
+```gradle
+android {
+
+    // …
+
+    aaptOptions {
+        noCompress "tflite"
+    }
+}
+```  
+
 
 ### Usage in React Native Code
 
