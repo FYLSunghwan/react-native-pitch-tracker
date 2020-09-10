@@ -9,8 +9,6 @@ class PitchTracker: RCTEventEmitter {
         ModelDataHandler(modelFileInfo: ConvActions.modelInfo)
     private var audioInputManager: AudioInputManager?
     
-    private var vc:UIViewController = UIViewController()
-    
     // MARK: Instance Variables
     private var result: [Int]?
     private var prevKeys: [Int] = Array(repeating: 0, count: 88)
@@ -52,7 +50,6 @@ class PitchTracker: RCTEventEmitter {
         guard let workingAudioInputManager = audioInputManager else {
             return
         }
-        workingAudioInputManager.checkPermissions()
         workingAudioInputManager.prepareMicrophone()
     }
 
@@ -90,21 +87,6 @@ extension PitchTracker: AudioInputManagerDelegate {
 
         self.runModel(onBuffer: Array(channelData[0..<handler.sampleRate]))
         self.runModel(onBuffer: Array(channelData[handler.sampleRate..<bufferSize]))
-    }
-
-    func showCameraPermissionsDeniedAlert() {
-
-        let alertController = UIAlertController(title: "Microphone Permissions Denied", message: "Microphone permissions have been denied for this app. You can change this by going to Settings", preferredStyle: .alert)
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let settingsAction = UIAlertAction(title: "Settings", style: .default) { (action) in
-            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
-        }
-
-        alertController.addAction(cancelAction)
-        alertController.addAction(settingsAction)
-
-        vc.present(alertController, animated: true, completion: nil)
     }
 }
 

@@ -1,4 +1,5 @@
-import { NativeEventEmitter, NativeModules } from 'react-native';
+import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
+import { request, PERMISSIONS } from 'react-native-permissions';
 
 type PitchTrackerType = {
   prepare(): any;
@@ -13,6 +14,14 @@ const eventEmitter = new NativeEventEmitter(PitchTracker);
 
 export default {
   ...PitchTracker,
+  prepare: () => {
+    let permission = Platform.select({
+      android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      ios: PERMISSIONS.IOS.LOCATION_ALWAYS,
+    })!;
+    request(permission);
+    PitchTracker.prepare();
+  },
   noteOn: (callback: (res: object) => any) => {
     eventEmitter.addListener('NoteOn', callback);
   },
