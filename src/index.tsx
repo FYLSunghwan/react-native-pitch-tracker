@@ -1,5 +1,5 @@
 import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
-import { request, PERMISSIONS } from 'react-native-permissions';
+import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 type PitchTrackerType = {
   prepare(): any;
@@ -12,14 +12,25 @@ type PitchTrackerType = {
 const { PitchTracker } = NativeModules;
 const eventEmitter = new NativeEventEmitter(PitchTracker);
 
+const askPermission = async () => {
+  try {
+    let permission = Platform.select({
+      android: PERMISSIONS.ANDROID.RECORD_AUDIO,
+      ios: PERMISSIONS.IOS.MICROPHONE,
+    })!;
+    const result = await request(permission);
+    if (result === RESULTS.GRANTED) {
+      console.log('Microphone Permission Successful');
+    }
+  } catch (error) {
+    console.log('askPermission', error);
+  }
+};
+
 export default {
   ...PitchTracker,
   prepare: () => {
-    let permission = Platform.select({
-      android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      ios: PERMISSIONS.IOS.LOCATION_ALWAYS,
-    })!;
-    request(permission);
+    askPermission();
     PitchTracker.prepare();
   },
   noteOn: (callback: (res: object) => any) => {
