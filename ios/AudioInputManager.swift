@@ -16,7 +16,6 @@ import AVFoundation
 
 
 protocol AudioInputManagerDelegate {
-    func showCameraPermissionsDeniedAlert()
     func didOutput(channelData: [Int16])
 }
 
@@ -46,29 +45,6 @@ class AudioInputManager: NSObject {
     // We are setting the buffer size to two times the Sample rate
         bufferSize = self.sampleRate * 2
         super.init()
-    }
-
-    func checkPermissions() {
-        switch AVAudioSession.sharedInstance().recordPermission {
-
-        case .granted:
-            return
-        case .denied:
-            delegate?.showCameraPermissionsDeniedAlert()
-        case .undetermined:
-            requestPermissions()
-        }
-    }
-
-    func requestPermissions() {
-        AVAudioSession.sharedInstance().requestRecordPermission { (granted) in
-            if granted {
-                return
-            }
-            else {
-                self.checkPermissions()
-            }
-        }
     }
 
     func prepareMicrophone() {
