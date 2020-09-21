@@ -44,7 +44,7 @@ class PitchTracker: RCTEventEmitter {
         if(audioInputManager != nil) {
             return
         }
-        audioInputManager = AudioInputManager(sampleRate: handler.sampleRate)
+        audioInputManager = AudioInputManager(sampleRate: handler.sampleRate, sequenceLength: handler.sequenceLength)
         audioInputManager?.delegate = self
         
         guard let workingAudioInputManager = audioInputManager else {
@@ -84,9 +84,9 @@ extension PitchTracker: AudioInputManagerDelegate {
         guard let handler = modelDataHandler else {
             return
         }
+        bufferSize = (handler.sampleRate * handler.sequenceLength) / 1000
 
-        self.runModel(onBuffer: Array(channelData[0..<handler.sampleRate]))
-        self.runModel(onBuffer: Array(channelData[handler.sampleRate..<bufferSize]))
+        self.runModel(onBuffer: Array(channelData[0..<bufferSize]))
     }
 }
 

@@ -24,6 +24,7 @@ class AudioInputManager: NSObject {
     // MARK: Constants
     let bufferSize: Int
     private let sampleRate: Int
+    private let sequenceLength: Int
 
     var delegate: AudioInputManagerDelegate?
 
@@ -39,11 +40,12 @@ class AudioInputManager: NSObject {
     The initializer initializes the AudioInputManager with the required sample rate for the audio
     output.
     */
-    init(sampleRate: Int) {
+    init(sampleRate: Int, sequenceLength: Int) {
         self.sampleRate = sampleRate
+        self.sequenceLength = sequenceLength
 
     // We are setting the buffer size to two times the Sample rate
-        bufferSize = self.sampleRate * 2
+        bufferSize = 17920
         super.init()
     }
 
