@@ -13,6 +13,7 @@ class PitchTracker: RCTEventEmitter {
     private var result: [Int]?
     private var prevKeys: [Int] = Array(repeating: 0, count: 88)
     private var bufferSize: Int = 0
+    private var threshold: Int = 10
 
     @objc
     func start() {
@@ -44,7 +45,7 @@ class PitchTracker: RCTEventEmitter {
         if(audioInputManager != nil) {
             return
         }
-        audioInputManager = AudioInputManager(sampleRate: handler.sampleRate)
+        audioInputManager = AudioInputManager(sampleRate: handler.sampleRate, sequenceLength: handler.sequenceLength)
         audioInputManager?.delegate = self
         
         guard let workingAudioInputManager = audioInputManager else {
@@ -59,10 +60,10 @@ class PitchTracker: RCTEventEmitter {
             return
         }
         for i in 0...87 {
-            if(prevKeys[i]==0 && nowKeys[i]>0) {
+            if(prevKeys[i]<=self.threshold && nowKeys[i]>self.threshold) {
                 sendEvent(withName: "NoteOn", body: ["midiNum": i+21])
             }
-            if(prevKeys[i]>0 && nowKeys[i]==0) {
+            if(prevKeys[i]>self.threshold && nowKeys[i]<=self.threshold) {
                 sendEvent(withName: "NoteOff", body: ["midiNum": i+21])
             }
             prevKeys[i] = nowKeys[i]
@@ -84,9 +85,9 @@ extension PitchTracker: AudioInputManagerDelegate {
         guard let handler = modelDataHandler else {
             return
         }
+        bufferSize = (handler.sampleRate * handler.sequenceLength) / 1000
 
-        self.runModel(onBuffer: Array(channelData[0..<handler.sampleRate]))
-        self.runModel(onBuffer: Array(channelData[handler.sampleRate..<bufferSize]))
+        self.runModel(onBuffer: Array(channelData[0..<bufferSize]))
     }
 }
 
