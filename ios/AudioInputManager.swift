@@ -45,7 +45,7 @@ class AudioInputManager: NSObject {
         self.sequenceLength = sequenceLength
 
     // We are setting the buffer size to two times the Sample rate
-        bufferSize = 17920
+        bufferSize = (self.sampleRate * self.sequenceLength) / 1000
         super.init()
     }
 
@@ -64,7 +64,7 @@ class AudioInputManager: NSObject {
             self.conversionQueue.async {
             
                 // An AVAudioConverter is used to convert the microphone input to the format required for the model.(pcm 16)
-                let pcmBuffer = AVAudioPCMBuffer(pcmFormat: recordingFormat!, frameCapacity: AVAudioFrameCount(recordingFormat!.sampleRate * 2.0))
+                let pcmBuffer = AVAudioPCMBuffer(pcmFormat: recordingFormat!, frameCapacity: AVAudioFrameCount(self.bufferSize))
                 var error: NSError? = nil
 
                 let inputBlock: AVAudioConverterInputBlock = {inNumPackets, outStatus in
