@@ -16,7 +16,7 @@ npm install --save react-native-pitch-tracker react-native-permissions
 ## Usage
 
 ### Prerequisites (iOS/iPadOS)
-- First, Download [this(Download Link : Onsets and Frames TFLite)](https://storage.googleapis.com/magentadata/models/onsets_frames_transcription/tflite/onsets_frames_wavinput.tflite) Model.  
+- First, Download [this(Download Link : Onsets and Frames TFLite)](https://storage.googleapis.com/magentadata/models/onsets_frames_transcription/tflite/onsets_frames_wavinput_uni.tflite) Model.  
 - After that, add this file to your XCode Project.
 - Double check that the file is successfully imported to project.
   - Check the .tflite model is in your `Project File -> Build Phases -> Copy Bundle Resources`  
@@ -40,7 +40,7 @@ end
 ```  
 
 ### Prerequisites (Android)
-- Copy the downloaded [file(tflite model)](https://storage.googleapis.com/magentadata/models/onsets_frames_transcription/tflite/onsets_frames_wavinput.tflite) to `{ProjDirectory}/android/app/src/main/assets`.
+- Copy the downloaded [file(tflite model)](https://storage.googleapis.com/magentadata/models/onsets_frames_transcription/tflite/onsets_frames_wavinput_uni.tflite) to `{ProjDirectory}/android/app/src/main/assets`.
 - After that, update the `build.gradle`
 ```gradle
 android {
