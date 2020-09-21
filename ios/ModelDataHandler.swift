@@ -17,7 +17,7 @@ typealias FileInfo = (name: String, extension: String)
 
 /// Information about the ConvActions model.
 enum ConvActions {
-    static let modelInfo: FileInfo = (name: "onsets_frames_wavinput", extension: "tflite")
+    static let modelInfo: FileInfo = (name: "onsets_frames_wavinput_uni", extension: "tflite")
 }
 
 
@@ -31,30 +31,15 @@ class ModelDataHandler {
     let threadCount: Int
 
     let threadCountLimit = 10
-    let sampleRate = 17920
+    let sampleRate = 16000
+    let sequenceLength = 1120
 
     // MARK: - Private Properties
     private var buffer:[Int] = []
-    private let audioBufferInputTensorIndex = 0
-    private let sampleRateInputTensorIndex = 1
-    private let labelOffset = 2
-    private let sampleDuration = 1000
-    private let minimumCount = 3
-    private let averageWindowDuration = 1000.0
-    private let suppressionMs = 1500.0
-    private let threshold = 0.5
-    private let minTimeBetweenSamples = 30.0
     private let maxInt16AsFloat32: Float32 = 32767.0
-
-    /// List of labels from the given labels file.
-    private var labels: [String] = []
 
     /// TensorFlow Lite `Interpreter` object for performing inference on a given model.
     private var interpreter: Interpreter
-
-    private var recordingLength: Int {
-        return (sampleRate * sampleDuration) / 1000
-    }
 
     // MARK: - Initialization
     /// A failable initializer for `ModelDataHandler`. A new instance is created if the model and
