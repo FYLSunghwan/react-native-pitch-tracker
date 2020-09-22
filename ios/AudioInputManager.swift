@@ -56,6 +56,8 @@ class AudioInputManager: NSObject {
         guard let formatConverter =  AVAudioConverter(from:inputFormat, to: recordingFormat!) else {
             return
         }
+
+        try? AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default)
     
         print("Preparing")
         // We install a tap on the audio engine and specifying the buffer size and the input format.
