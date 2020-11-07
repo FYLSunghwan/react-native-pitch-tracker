@@ -50,14 +50,23 @@ class AudioInputManager: NSObject {
     }
 
     func prepareMicrophone() {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+          try audioSession.setCategory(.playAndRecord, options: .mixWithOthers)
+          try audioSession.setMode(.default)
+          try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+          try audioSession.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+        } catch {
+          debugPrint("Enable to start audio engine")
+          return
+        }
+
         let inputNode = audioEngine.inputNode
         let inputFormat = inputNode.outputFormat(forBus: 0)
         let recordingFormat = AVAudioFormat(commonFormat: .pcmFormatInt16, sampleRate: Double(sampleRate), channels: 1, interleaved: true)
         guard let formatConverter =  AVAudioConverter(from:inputFormat, to: recordingFormat!) else {
             return
         }
-
-        try? AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default)
     
         print("Preparing")
         // We install a tap on the audio engine and specifying the buffer size and the input format.
