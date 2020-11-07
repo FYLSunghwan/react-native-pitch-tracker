@@ -60,13 +60,9 @@ class PitchTracker: RCTEventEmitter {
             return
         }
         for i in 0...87 {
-            if(prevKeys[i]<=self.threshold && nowKeys[i]>self.threshold) {
+            if(nowKeys[i] > 4) {
                 sendEvent(withName: "NoteOn", body: ["midiNum": i+21])
             }
-            if(prevKeys[i]>self.threshold && nowKeys[i]<=self.threshold) {
-                sendEvent(withName: "NoteOff", body: ["midiNum": i+21])
-            }
-            prevKeys[i] = nowKeys[i]
         }
     }    
 
