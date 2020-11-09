@@ -1,6 +1,6 @@
 {
   "name": "react-native-pitch-tracker",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "React Native Pitch Tracker implemented with Tensorflow Lite Model",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
