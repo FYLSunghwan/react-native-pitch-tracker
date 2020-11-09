@@ -52,7 +52,7 @@ class AudioInputManager: NSObject {
     func prepareMicrophone() {
         let audioSession = AVAudioSession.sharedInstance()
         do {
-          try audioSession.setCategory(.playAndRecord, options: [.defaultToSpeaker, .allowBluetoothA2DP, .mixWithOthers]
+          try audioSession.setCategory(.playAndRecord, options: [.defaultToSpeaker, .allowBluetoothA2DP, .mixWithOthers])
           try audioSession.setMode(.default)
           try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
         } catch {
